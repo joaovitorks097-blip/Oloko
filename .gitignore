@@ -1,34 +1,49 @@
-# Gradle files
-.gradle/
-build/
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-# Local configuration file (sdk path, etc)
-local.properties
+export default function App() {
+  const [peso, setPeso] = useState('');
+  const [altura, setAltura] = useState('');
+  const [resultado, setResultado] = useState('');
 
-# Log/OS Files
-*.log
+  function calcular() {
+    if (!peso || !altura) {
+      alert("Preencha os campos!");
+      return;
+    }
+    const alt = parseFloat(altura) / 100;
+    const imc = (parseFloat(peso) / (alt * alt)).toFixed(2);
+    setResultado(`IMC: ${imc}`);
+  }
 
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.aab
-*.apk
-output-metadata.json
+  return (
+    <View style={styles.container}>
+      <Text style={styles.titulo}>Minha Calculadora</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Peso (ex: 70)"
+        keyboardType="numeric"
+        onChangeText={setPeso}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Altura cm (ex: 170)"
+        keyboardType="numeric"
+        onChangeText={setAltura}
+      />
+      <TouchableOpacity style={styles.botao} onPress={calcular}>
+        <Text style={styles.textoBotao}>CALCULAR</Text>
+      </TouchableOpacity>
+      <Text style={styles.resultado}>{resultado}</Text>
+    </View>
+  );
+}
 
-# IntelliJ
-*.iml
-.idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
-
-# Keystore files
-*.jks
-*.keystore
-
-# Google Services (e.g. APIs or Firebase)
-google-services.json
-
-# Android Profiling
-*.hprof
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
+  titulo: { fontSize: 22, textAlign: 'center', marginBottom: 20 },
+  input: { borderWidth: 1, borderColor: '#ddd', padding: 10, marginBottom: 10, borderRadius: 5 },
+  botao: { backgroundColor: '#007bff', padding: 15, borderRadius: 5 },
+  textoBotao: { color: '#fff', textAlign: 'center', fontWeight: 'bold' },
+  resultado: { fontSize: 20, marginTop: 20, textAlign: 'center' }
+});
